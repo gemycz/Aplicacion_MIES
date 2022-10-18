@@ -1,62 +1,61 @@
-<?php 
-    //Evitar error de cords (Se presenta al usar https en el servidor)
-	header('Access-Control-Allow-Origin: *');
-	header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-type, Accept, Accept-Control-Request-Method");
-	header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-	header("Allow: GET, POST, OPTIONS, PUT, DELETE");
-	$method = $_SERVER['REQUEST_METHOD'];
-	if($method == "OPTIONS"){
-		die();
-	}
-    //Servidor
-	$servidor = "localhost";
+<?php
+//Evitar error de cords (Se presenta al usar https en el servidor)
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-type, Accept, Accept-Control-Request-Method");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Allow: GET, POST, OPTIONS, PUT, DELETE");
+$method = $_SERVER['REQUEST_METHOD'];
+if ($method == "OPTIONS") {
+    die();
+}
+//Servidor
+$servidor = "localhost";
 
-	//Nombre de la Base de datos
-	$db = "mies_db";
+//Nombre de la Base de datos
+$db = "mies_db";
 
-	//Usuario DB.
-	$usuario = "root";
+//Usuario DB.
+$usuario = "root";
 
-	//Clave DB.
-	$clave = "";
+//Clave DB.
+$clave = "";
 
-    //Conexion
-    $conn = new mysqli($servidor, $usuario, $clave, $db);
+//Conexion
+$conn = new mysqli($servidor, $usuario, $clave, $db);
 
-    if($conn->connect_error){
-        die("Conexión fallida:" .$conn->connect_error);
-    }
-    
+if ($conn->connect_error) {
+    die("Conexión fallida:" . $conn->connect_error);
+}
 
-    $json = file_get_contents('php://input');
 
-    //Decodificando lo recibido en JSON y guardar en variable $obj.
-    $obj = json_decode($json, true);
+$json = file_get_contents('php://input');
 
-    //Las respuestas que se reciben se guardan en la variable $
-    $ua_zona = $obj['ua_zona'];
-    $ua_servicio = $obj['ua_servicio'];
-    $ua_unidadatencion = $obj['ua_unidadatencion'];
-    $ua_distrito = $obj['ua_distrito'];
-    $ua_modalidad = $obj['ua_modalidad'];
+//Decodificando lo recibido en JSON y guardar en variable $obj.
+$obj = json_decode($json, true);
 
-    if(($obj['ua_zona'] != "") || ($obj['ua_servicio'] != "") || ($obj['ua_unidadatencion'] != "") || ($obj['ua_distrito'] != "") || ($obj['ua_modalidad'] != "")){
-        $result = $conn->query("SELECT * FROM unidad_Atencion WHERE ua_unidadatencion='$ua_unidadatencion'");
+//Las respuestas que se reciben se guardan en la variable $
+$ua_zona = $obj['ua_zona'];
+$ua_servicio = $obj['ua_servicio'];
+$ua_unidadatencion = $obj['ua_unidadatencion'];
+$ua_distrito = $obj['ua_distrito'];
+$ua_modalidad = $obj['ua_modalidad'];
 
-        if($result->num_rows>0){
-            echo json_encode('La Unidad de Atención ya existe');
-        }else{
-            $add = $conn->query("INSERT INTO unidad_Atencion (ua_zona, ua_servicio, ua_unidadatencion, ua_distrito, ua_modalidad) 
+if (($obj['ua_zona'] != "") || ($obj['ua_servicio'] != "") || ($obj['ua_unidadatencion'] != "") || ($obj['ua_distrito'] != "") || ($obj['ua_modalidad'] != "")) {
+    $result = $conn->query("SELECT * FROM unidad_Atencion WHERE ua_unidadatencion='$ua_unidadatencion'");
+
+    if ($result->num_rows > 0) {
+        echo json_encode('La Unidad de Atención ya existe');
+    } else {
+        $add = $conn->query("INSERT INTO unidad_Atencion (ua_zona, ua_servicio, ua_unidadatencion, ua_distrito, ua_modalidad) 
             VALUE ('$ua_zona','$ua_servicio','$ua_unidadatencion','$ua_distrito', '$ua_modalidad')");
 
-            if($add){
-                echo json_encode('Unidad de Atención registrada correctamente');
-            }else{
-                echo json_encode('Error al realizar el registro');
-            }
+        if ($add) {
+            echo json_encode('Unidad de Atención registrada correctamente');
+        } else {
+            echo json_encode('Error al realizar el registro');
         }
-    }else{
-        echo json_encode('Todos los campos son obligatorios');
     }
-  
-?>
+} else {
+    echo json_encode('Todos los campos son obligatorios');
+}
+
