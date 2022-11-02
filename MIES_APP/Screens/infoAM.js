@@ -1,24 +1,17 @@
 //import { StatusBar } from 'expo-status-bar';
-import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Text, Button } from 'native-base';
-import { NavigationContext, useNavigation } from '@react-navigation/native';
-import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    ImageBackground,
-    TextInput,
-    Dimensions,
-    TouchableOpacity, AsyncStorage, ScrollView
-} from 'react-native';
+import {Text, Thumbnail} from 'native-base';
+import {NavigationContext} from '@react-navigation/native';
+import React, {Component} from 'react';
+import {Dimensions, ImageBackground, ScrollView, StyleSheet, View} from 'react-native';
 import bgImage from '../assets/img_sistema/fondo_login.jpg';
 import AvUser from '../assets/img_sistema/user.png';
 //import Icon from 'react-native-vector-icons/Ionicons';
 //import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import 'moment/locale/es';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-const { width: WIDTH } = Dimensions.get('window');
+const {width: WIDTH} = Dimensions.get('window');
 
 export class infoAM extends Component {
 
@@ -47,17 +40,17 @@ export class infoAM extends Component {
             Roboto: require('native-base/Fonts/Roboto.ttf'),
             Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
         });
-        this.setState({ isReady: true });
+        this.setState({isReady: true});
     }
 
     render() {
         return (
-            <ImageBackground source={bgImage} style={styles.backgroundContainer} >
+            <ImageBackground source={bgImage} style={styles.backgroundContainer}>
                 <SafeAreaView>
                     <ScrollView>
                         <View>
-                            <View style={{ alignItems: 'center', paddingTop: 30, paddingBottom: 10 }}>
-                                <Thumbnail square source={AvUser} style={{ width: 150, height: 150 }} />
+                            <View style={{alignItems: 'center', paddingTop: 30, paddingBottom: 10}}>
+                                <Thumbnail square source={AvUser} style={{width: 150, height: 150}}/>
                             </View>
                             <Text style={styles.subtitulo}>{this.state.nombre + ' ' + this.state.apellido}.</Text>
                             <Text style={styles.items}>Cédula:</Text>
